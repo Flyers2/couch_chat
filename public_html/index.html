@@ -10,6 +10,10 @@
             }
             #messageArea{
                 height:75%;
+                overflow:auto;
+                width:75%;
+                float:left;
+                
             }
             .form-control{
                 width: 100%;
@@ -69,10 +73,10 @@
             );
             });
             
-            function displayChat(){
+            function displayChat(){ //this will disappear when seechats is done
                 $.ajax({
                         type:"GET",
-                        url:dburl+"/_changes?feed=continuous&include_docs=true",
+                        url:dburl+"/_all_docs?include_docs=true",
                         success:function(data){
                             data=JSON.parse(data);
                             $(data.rows).each(function(index,obj){
@@ -82,6 +86,20 @@
                        }
                     
                     );
+            }
+            function seeChats(){
+                var xhr =$.ajaxSettings.xhr();
+                xhr.open("GET",dburl+"/_changes?feed=continuous&include_docs=true",true)
+                xhr.send("");
+                xhr.onreadystatechange = function (){
+                    if (this.readyState===3 && this.response) {
+                        this.response.split("\n").forEach(function(row){
+                            if(row.length) {
+                                console.dir(JSON.parse(row));
+                            }
+                        })
+                    }
+                };
             }
         </script>
     </body>
