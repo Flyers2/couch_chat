@@ -1,0 +1,88 @@
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            div{
+                border:2px solid blue
+            }
+            #messageArea{
+                height:75%;
+            }
+            .form-control{
+                width: 100%;
+            }
+            #submit{
+                float:right;
+                margin-top: 4px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-responsive.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+         <link rel="stylesheet" href="css/bootstrap.css">
+         <link rel="stylesheet" href="css/bootstrap.min.css">
+            
+    </head>
+    <body>
+        <div id ="messageArea">
+            
+        </div>
+        <div id ="inputArea">
+            <textarea class="form-control" id="inputChat" rows="3"></textarea>
+        </div>
+        
+        <div id ="contols">
+            <button type="button" id="submit" class="btn btn-info .btn-lg">send</button>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!--<script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery/jquery.js"></script>-->
+        <script>
+            var dburl = "http://localhost:5984/fast_chat",
+                userName= "anonymous",
+                target = 'mainChat',
+                message ='';
+            $('#submit').click(function(){
+                message = $('#inputChat').val();
+                var package=JSON.stringify(
+                    {
+                        userName:userName,
+                        recipient:target,
+                        message:message
+                    }
+                );
+            $.ajax(
+                {
+                    type:"POST",
+                    url:dburl,
+                    data:package,
+                    contentType: "application/json",
+                    success:(function(){
+                        $('#inputChat').val("");
+                        displayChat();
+                    })
+                    
+                }
+            );
+            });
+            
+            function displayChat(){
+                $.ajax({
+                        type:"GET",
+                        url:dburl+"/_changes?feed=continuous&include_docs=true",
+                        success:function(data){
+                            data=JSON.parse(data);
+                            $(data.rows).each(function(index,obj){
+                                $('#messageArea').append(obj.doc.userName+":"+"  "+obj.doc.message+"<br>");  
+                            });
+                        }
+                       }
+                    
+                    );
+            }
+        </script>
+    </body>
+</html>
