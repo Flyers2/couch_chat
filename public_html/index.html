@@ -1,19 +1,24 @@
 
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Fast Chat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <style>
+            #userNameInput{
+                float:right;
+                border-top: none;
+            }
             div{
-                border:2px solid blue
+                border:2px solid black;
+                   
             }
             #messageArea{
                 height:75%;
                 overflow:auto;
                 width:75%;
                 float:left;
-                
+
             }
             .form-control{
                 width: 100%;
@@ -22,22 +27,31 @@
                 float:right;
                 margin-top: 4px;
             }
+            
         </style>
         <link rel="stylesheet" href="css/bootstrap-responsive.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-         <link rel="stylesheet" href="css/bootstrap.css">
-         <link rel="stylesheet" href="css/bootstrap.min.css">
-            
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
     </head>
     <body>
+        
+        <form id ="userInfo" class="form-inline">
+           <span id="userNameInput">
+                  enter a user name: <input type ="text" id="theUser">
+                   <button type="button" id="nameSubmit"  class="btn btn-primary btn-xs">submit</button>
+           </span>
+            <br>
+        </form>
         <div id ="messageArea">
-            
+
         </div>
         <div id ="inputArea">
             <textarea class="form-control" id="inputChat" rows="3"></textarea>
         </div>
-        
-        <div id ="contols">
+
+        <div id ="controls">
             <button type="button" id="submit" class="btn btn-info .btn-lg">send</button>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -46,61 +60,78 @@
         <script src="js/jquery/jquery.js"></script>-->
         <script>
             var dburl = "http://localhost:5984/fast_chat",
-                userName= "anonymous",
+                userName = "anonymous",
                 target = 'mainChat',
-                message ='';
-            $('#submit').click(function(){
+                updater = 0,
+                message = '';
+            
+             $('#nameSubmit').click(function(){
+                console.log("testclick");
+                userName= document.getElementById('theUser').value;
+                alert(userName);
+            });
+            $('#submit').click(function() {
                 message = $('#inputChat').val();
-                var package=JSON.stringify(
+                var package = JSON.stringify(
                     {
-                        userName:userName,
-                        recipient:target,
-                        message:message
+                        userName: userName,
+                        recipient: target,
+                        message: message
                     }
                 );
-            $.ajax(
-                {
-                    type:"POST",
-                    url:dburl,
-                    data:package,
-                    contentType: "application/json",
-                    success:(function(){
-                        $('#inputChat').val("");
-                        displayChat();
-                    })
-                    
-                }
-            );
-            });
-            
-            function displayChat(){ //this will disappear when seechats is done
-                $.ajax({
-                        type:"GET",
-                        url:dburl+"/_all_docs?include_docs=true",
-                        success:function(data){
-                            data=JSON.parse(data);
-                            $(data.rows).each(function(index,obj){
-                                $('#messageArea').append(obj.doc.userName+":"+"  "+obj.doc.message+"<br>");  
-                            });
-                        }
-                       }
-                    
-                    );
-            }
-            function seeChats(){
-                var xhr =$.ajaxSettings.xhr();
-                xhr.open("GET",dburl+"/_changes?feed=continuous&include_docs=true",true)
-                xhr.send("");
-                xhr.onreadystatechange = function (){
-                    if (this.readyState===3 && this.response) {
-                        this.response.split("\n").forEach(function(row){
-                            if(row.length) {
-                                console.dir(JSON.parse(row));
-                            }
+           
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: dburl,
+                        data: package,
+                        contentType: "application/json",
+                        success: (function() {
+                            $('#inputChat').val("");
+                            // displayChat();
                         })
+
                     }
-                };
+                );
+            });
+
+            function displayChat() { //this will disappear when seechats is done
+                $.ajax({
+                    type: "GET",
+                    url: dburl + "/_all_docs?include_docs=true",
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        $(data.rows).each(function(index, obj) {
+                            $('#messageArea').append("<span id="+obj.doc.userName+"+>"+obj.doc.userName + ":</span>" + "  " + obj.doc.message + "<br>");
+                            if(obj.doc.userName===userName){
+                                $('#obj.doc.userName').css("color","blue");
+                            }
+                        });
+                    }
+                }
+
+                );
             }
+            function seeChats() {
+                $.getJSON(dburl + "/_changes?since=" + updater + "&include_docs=true", function(data) {
+                    var scrollToBottom;
+                    data.results.forEach(function(result)
+                    {
+                        if( $('#messageArea').scrollTop()===($('#messageArea')[0].scrollHeight)){
+                            scrollToBottom=true;
+                        }
+                        $('#messageArea').append("<span class ='"+result.doc.userName+"'>"+result.doc.userName + ":" + "  " + result.doc.message + "</span><br>");
+                        if(result.doc.userName===userName && result.doc.userName!=='anonymous'){
+                               $('.'+result.doc.userName).css('color','red');
+                            }
+                       // if(scrollToBottom){
+                            $('#messageArea').scrollTop($('#messageArea')[0].scrollHeight);
+                       // }
+                    });
+                    updater = data.last_seq;
+                });
+            }
+            setInterval(seeChats, 800);
         </script>
     </body>
 </html>
