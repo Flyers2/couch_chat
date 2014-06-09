@@ -4,55 +4,48 @@
         <title>Fast Chat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
-        <style>
-            #userNameInput{
-                float:right;
-                border-top: none;
-            }
-            div{
-                border:2px solid black;
-                   
-            }
-            #messageArea{
-                height:75%;
-                overflow:auto;
-                width:75%;
-                float:left;
-
-            }
-            .form-control{
-                width: 100%;
-            }
-            #submit{
-                float:right;
-                margin-top: 4px;
-            }
-            
-        </style>
+        <link rel="stylesheet" type="text/css" href ="couch.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
     </head>
     <body>
-        
-        <form id ="userInfo" class="form-inline">
+        <div id ="welcome">
+            <h2>Welcome to FastChat</h2>
+            <h5>quick and easy online chats</h5>
+            <image src="http://ts2.mm.bing.net/th?&id=HN.607994655766610062&w=315&h=300&c=0&pid=1.9&rs=0&p=0" id="couchPic">
+            <div id ="allRooms">
+                    
+                </div>
+            <form id ="userInfo" class="form-inline">
+                
            <span id="userNameInput">
-                  enter a user name: <input type ="text" id="theUser">
-                   <button type="button" id="nameSubmit"  class="btn btn-primary btn-xs">submit</button>
-           </span>
-            <br>
+                  enter a user name: <input type ="text" id="theUser">    
+                   create new room <input type ="text" id="theRoom">
+                   <button type="button" id="nameInput"  class="btn btn-primary btn-xs">submit</button>
+           </span>        
+             <div id="chooseroom">
+                 
+             </div>
         </form>
-        <div id ="messageArea">
+        </div>
+        
+        
+        <div id ="messageArea" class="panel panel-primary specific" >
+            <div class="panel-heading">
+                 <h3 class="panel-title">Panel title</h3>
+        </div>
 
         </div>
-        <div id ="inputArea">
-            <textarea class="form-control" id="inputChat" rows="3"></textarea>
+        <div id ="inputArea" class="specific">
+            <textarea class="form-control specific" id="inputChat" rows="3"></textarea>
         </div>
 
-        <div id ="controls">
-            <button type="button" id="submit" class="btn btn-info .btn-lg">send</button>
+        <div id ="controls" class="specific">
+            <button type="button" id="submit" class="btn btn-info .btn-lg specific">send</button>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <!--<script src="js/bootstrap.js"></script>
@@ -60,22 +53,27 @@
         <script src="js/jquery/jquery.js"></script>-->
         <script>
             var dburl = "http://localhost:5984/fast_chat",
+                seeRoomsUrl=dburl+"/_design/seerooms/_view/rooms?group_level=1";
                 userName = "anonymous",
-                target = 'mainChat',
+                recipient='',
                 updater = 0,
                 message = '';
             
-             $('#nameSubmit').click(function(){
-                console.log("testclick");
+             $('#nameInput').click(function(){
                 userName= document.getElementById('theUser').value;
-                alert(userName);
+                recipient= document.getElementById('theRoom').value;
+                if (recipient &&userName){
+                    $('#welcome').css("display","none");
+                    $('.specific').css("display","inherit");
+                }
+                    
             });
             $('#submit').click(function() {
                 message = $('#inputChat').val();
                 var package = JSON.stringify(
                     {
                         userName: userName,
-                        recipient: target,
+                        recipient: recipient,
                         message: message
                     }
                 );
@@ -88,50 +86,45 @@
                         contentType: "application/json",
                         success: (function() {
                             $('#inputChat').val("");
-                            // displayChat();
                         })
 
                     }
                 );
             });
-
-            function displayChat() { //this will disappear when seechats is done
-                $.ajax({
-                    type: "GET",
-                    url: dburl + "/_all_docs?include_docs=true",
-                    success: function(data) {
-                        data = JSON.parse(data);
-                        $(data.rows).each(function(index, obj) {
-                            $('#messageArea').append("<span id="+obj.doc.userName+"+>"+obj.doc.userName + ":</span>" + "  " + obj.doc.message + "<br>");
-                            if(obj.doc.userName===userName){
-                                $('#obj.doc.userName').css("color","blue");
-                            }
-                        });
-                    }
-                }
-
-                );
-            }
             function seeChats() {
-                $.getJSON(dburl + "/_changes?since=" + updater + "&include_docs=true", function(data) {
-                    var scrollToBottom;
-                    data.results.forEach(function(result)
-                    {
-                        if( $('#messageArea').scrollTop()===($('#messageArea')[0].scrollHeight)){
-                            scrollToBottom=true;
-                        }
-                        $('#messageArea').append("<span class ='"+result.doc.userName+"'>"+result.doc.userName + ":" + "  " + result.doc.message + "</span><br>");
-                        if(result.doc.userName===userName && result.doc.userName!=='anonymous'){
-                               $('.'+result.doc.userName).css('color','red');
-                            }
-                       // if(scrollToBottom){
-                            $('#messageArea').scrollTop($('#messageArea')[0].scrollHeight);
-                       // }
-                    });
-                    updater = data.last_seq;
-                });
+                if(recipient && userName)
+                {
+                     // old one $.getJSON(dburl + "/_changes?since=" + updater + "&include_docs=true", function(data) {
+                     $.getJSON(dburl +"/_changes?filter=roomlimit/theroom&recipient="+recipient+"&since="+updater+"&include_docs=true",function(data){
+                         var scrollToBottom;
+                         data.results.forEach(function(result)
+                         {
+                             if( $('#messageArea').scrollTop()===($('#messageArea')[0].scrollHeight)){
+                                 scrollToBottom=true;
+                             }
+                             $('#messageArea').append("<span class ='"+result.doc.userName+"'>"+result.doc.userName + ":" + "  " + result.doc.message + "</span><br>");
+                             if(result.doc.userName===userName && result.doc.userName!=='anonymous'){
+                                    $('.'+result.doc.userName).css('color','red');
+                                 }
+                            // if(scrollToBottom){
+                                 $('#messageArea').scrollTop($('#messageArea')[0].scrollHeight);
+                            // }
+                         });
+                         updater = data.last_seq;
+                     });
+                 }
             }
             setInterval(seeChats, 800);
+            
+            function getRooms(){
+                $.getJSON(seeRoomsUrl,function(data){
+                    $(data.rows).each(function(index,obj){
+                       roomName= obj.key;
+                       $('#allRooms').append(roomName+"<br>");
+                    });
+                });
+            }
+            getRooms();
         </script>
     </body>
 </html>
