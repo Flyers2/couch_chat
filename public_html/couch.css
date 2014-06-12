@@ -1,0 +1,89 @@
+#userNameInput{
+    display: block;
+    background-color: beige;
+    height: 50%;
+    width: 30%;
+    margin-left: 36%;
+    margin-top: 8%;
+
+    border-top: none;
+
+    vertical-align: top;
+
+    border: solid silver thin;
+    padding: 1%;
+    position: absolute;
+}
+
+div{
+    /* border: black; */
+
+}
+#userInfo,userNameInput{//deleted this guy from html
+                        //border:none;
+                        float:right;
+                        margin-right:2%;
+                        border:solid silver thin;
+                        padding:1%;
+}
+#messageArea{
+    height:75%;
+    overflow:auto;
+    width:75%;
+    float:left;
+    margin-bottom:0px;
+    margin-top: 54px;
+    margin-left: 57px;
+
+}
+.form-control{
+    width: 25%;
+}
+#submit{
+    float:right;
+    margin-right: 21%;
+    margin-top: 4px;
+}
+.specific{
+    display: none;
+}
+#welcome{
+    position:absolute;
+    height:100%;
+    width:100%;
+    text-align: center;
+}
+#couchPic{
+    /* position: absolute; */
+    float: left;
+    margin-left: 39%;
+    /* vertical-align: middle; */
+}
+#allRooms{
+    //float:left;
+    border:solid grey 1px; 
+    /* margin-right: 6px; */
+    /* padding:2px; */
+    float:right;
+    margin-right:2%;
+    border:solid silver thin;
+    padding:1%;
+    margin-top: 54px;
+}
+#createRoom{
+    /*   width: 57%;
+        height: 9%;*/
+
+    position: relative;
+    bottom: 4px;
+    margin-top:5px;
+}    
+#inputChat{
+    width:75%;
+    margin-left:57px;
+}
+#logout{
+    position:absolute;
+    top:10px;
+    right:10px;
+}
