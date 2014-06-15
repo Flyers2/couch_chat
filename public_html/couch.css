@@ -1,31 +1,8 @@
 #userNameInput{
-    display: block;
-    background-color: beige;
-    height: 50%;
-    width: 30%;
-    margin-left: 36%;
-    margin-top: 8%;
-
-    border-top: none;
-
-    vertical-align: top;
-
-    border: solid silver thin;
+    background-color: beige;   
     padding: 1%;
-    position: absolute;
 }
 
-div{
-    /* border: black; */
-
-}
-#userInfo,userNameInput{//deleted this guy from html
-                        //border:none;
-                        float:right;
-                        margin-right:2%;
-                        border:solid silver thin;
-                        padding:1%;
-}
 #messageArea{
     height:75%;
     overflow:auto;
@@ -40,35 +17,37 @@ div{
     width: 25%;
 }
 #submit{
+    visibility:hidden;
     float:right;
     margin-right: 21%;
     margin-top: 4px;
 }
-.specific{
-    display: none;
-}
+
 #welcome{
-    position:absolute;
+    position:relative;
     height:100%;
     width:100%;
     text-align: center;
 }
 #couchPic{
-    /* position: absolute; */
-    float: left;
-    margin-left: 39%;
-    /* vertical-align: middle; */
+  
 }
 #allRooms{
+    display:none;
     //float:left;
-    border:solid grey 1px; 
-    /* margin-right: 6px; */
-    /* padding:2px; */
+    /* border:solid grey 1px; */ 
+    top:18%;
+    right: 37%;
     float:right;
-    margin-right:2%;
+    width: 23%;
+
+    //right: 5px;
+
+    /* top: 2px; */
+    /* margin-right:2%; */
     border:solid silver thin;
     padding:1%;
-    margin-top: 54px;
+   // margin-top: 54px;
 }
 #createRoom{
     /*   width: 57%;
@@ -77,13 +56,28 @@ div{
     position: relative;
     bottom: 4px;
     margin-top:5px;
+    float: right;
 }    
 #inputChat{
+    display:inline; 
     width:75%;
     margin-left:57px;
 }
-#logout{
-    position:absolute;
-    top:10px;
-    right:10px;
+#controls{
+visibility: hidden; 
+display:inline;
+margin-left:57px;
+
+}#changeRoom{
+    position: absolute;
+    top: 80%;
+    right: 37%;
+}
+#chooseUserButton{
+    position: absolute;
+top: 80%;
+left: 37%;
+}
+.specific{
+    display: none;
 }
