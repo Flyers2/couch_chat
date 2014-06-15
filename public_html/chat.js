@@ -1,7 +1,7 @@
 
 var dburl = "http://localhost:5984/fast_chat",
     seeRoomsUrl = dburl + "/_design/seerooms/_view/rooms?group_level=1";
-userName = "",
+    userName = "",
     recipient = '',
     updater = 0,
     message = '';
@@ -17,13 +17,32 @@ $('#nameInput').click(function() {
     }
 });
 
-$('#logout').click(function(){
-    userName.length=0;
-    recipeint='';
-    $('.specific').css("display","none");
-    $('#welcome').css("display","inherit").append($('#allRooms'));
-    $('#allRooms').css("display","inherit");
+$('#changeRoomFromRoom').click(function(){
+    $('#allRooms').show();
+})
+$('#changeRoom').click(function(){
+    if(userName.length===0){
+        alert("You must select a username")
+        return;
+    }
+    $('#allRooms').css({
+        "display":"inline",
+        "position":"absolute",
+        "top":'18%',
+        'left':"43%"
+    });
+});
+$('#chooseUserButton').click(function(){
     $('#userNameInput').modal('show');
+});
+
+$('#logout').click(function(){
+    userName='';
+    recipeint='';
+    $('.specific').hide();
+    $('#welcome').show();
+    //$('#allRooms').css("display","inherit");
+    //$('#userNameInput').modal('show');
 });
 $('#submit').click(function() {
     message = $('#inputChat').val();
@@ -48,7 +67,7 @@ $('#submit').click(function() {
         }
     );
 });
-$('#userNameInput').modal('show');
+//$('#userNameInput').modal('show');
 function seeChats() {
     if (recipient && userName)
     {
@@ -92,33 +111,29 @@ function getRooms() {
                 }
             });
         });
+        $('#cancelChooseRoom').appendTo('#allRooms').click(function(){
+            $('#allRooms').css('display','none');
+        })
         $('#createRoom').appendTo("#allRooms").click(function() {
             if (checkUsername()) {
                 $("#myModal").modal('show');
                 $('#addRoomButton').click(function() {
-
                     recipient = $('#roomFromModal').val();
                     enterRoom(recipient);
-                    console.log(recipient);
                 });
             }
         });
     });
 }
-function ChangeRoomsMenu() {
-    $('#allRooms').css({
-        'float': 'right',
-    });
-    $('#allRooms').find('h3').html("change Room");
 
-}
 function enterRoom(recipient) {
     $('#messageArea').find('span').empty();
     updater = 0;
-    $('#welcome').css("display", "none");
-    ChangeRoomsMenu();
-    $('#allRooms').appendTo($('#messageAndMenu'));
-    $('.specific').css("display", "inherit");
+    $('#welcome').hide();  
+    $('#allRooms').css('display','none');
+    //$('#allRooms').appendTo($('#messageAndMenu'));
+    $('.specific').css("display", "inherit").show();
+    $('#controls').css( {'visibility':'visible','display':'inline','margin':'57px'});
     $('#chatRoomTitle').html("now chatting in " + recipient);
     $("#myModal").modal('hide');
 }
