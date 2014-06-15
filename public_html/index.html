@@ -11,55 +11,56 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id ="welcome">
+        <div id ="welcome" class="container-fluid">
             <h2>Welcome to FastChat</h2>
             <h5>quick and easy online chats</h5>
             <image src="http://ts2.mm.bing.net/th?&id=HN.607994655766610062&w=315&h=300&c=0&pid=1.9&rs=0&p=0" id="couchPic">
-
-            <div id="userNameInput" class="panel-primary modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Please Choose a username</h3>  
-                </div>
-                <br>   enter a user name: <input type ="text" id="theUser">
-                <br><br>     <button type="button" id="nameInput"  class="btn btn-primary btn-xs" style="float:right">submit</button>
-
-            </div>
-            <div id="rooms">
-                <div id="allRooms"  class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Choose a room</h3>         
-                        <input type="button" id ="createRoom" class="btn" value ="Create a new room"   data-target="#myModal">
-                    </div>
-
-                </div>
+            <button type="button" id="chooseUserButton" class="btn btn-default btn-sm">select a username</button>
+            <button type="button" id="changeRoom" class="btn btn-default btn-sm">Choose room</button>
 
 
-            </div> 
         </div>
-       
-            
-            <div id="messageAndMenu">
-                        <button type="button" id="logout" class="btn btn-default btn-sm specific">Log out</button>
-                        
-                   
-                <div id ="messageArea" class="panel panel-primary specific" >
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="chatRoomTitle" ></h3>
-                        
-                    </div>
-                        <div id="chatMessages"></div>
-                            
-                        
-                </div>
-             </div>
-            <div id ="inputArea" class="specific">
-                <textarea class="form-control specific" id="inputChat" rows="3"></textarea>
-            </div>
 
-            <div id ="controls" class="specific">
-                <button type="button" id="submit" class="btn btn-info .btn-lg specific">send</button>
+        <!-- <div id="userNameInput" class="panel-primary modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+             <div class="panel-heading">
+                 
+                 <h3 class="panel-title">Please Choose a username</h3>  
+             </div>
+             <br>   enter a user name: <input type ="text" id="theUser">
+             <br><br>     
+             <button type="button" id="nameInput"  class="btn btn-primary btn-xs" style="float:left">cancel</button>
+             <button type="button" id="nameInput"  class="btn btn-primary btn-xs" style="float:right">submit</button>
+ 
+         </div>-->
+
+
+        <div id="messageAndMenu">
+
+
+            <div id ="messageArea" class="panel panel-primary specific" >
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="chatRoomTitle" ></h3>
+
+                </div>
+                <div id="chatMessages"></div>
+
+
             </div>
-       
+            <div id ="inputArea" class="specific">
+                <textarea class="form-control specific" id="inputChat" rows="1"></textarea>
+            </div>
+            <button type="button" id="submit" class="btn btn-info btn-sm specific">send</button>
+            <div id ="controls" class="specific">
+                 
+                 <button type="button" id="logout" class="btn btn-default btn-sm specific">logout</button>
+                  <button type="button" id="changeRoomFromRoom" class="btn btn-default btn-sm specific">change room</button>
+            </div>
+           
+        </div>
+
+
+
         <!-- Button trigger modal -->
 
         <!-- Modal -->
@@ -81,9 +82,41 @@
             </div>
         </div>
 
-        <script src="chat.js">  </script>
-            
-      
+        <div class="modal fade" id="userNameInput" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="panel-title">Please Choose a username</h3>  
+                    </div>
+                    <div class="modal-body">
+                        <br>   enter a user name: <input type ="text" id="theUser">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" id="nameInput"  class="btn btn-default" >submit</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         
+        
+                <div id="allRooms"  class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Choose a room</h3>         
+                        <input type="button" id ="cancelChooseRoom" class="btn" value ="cancel">
+                        <input type="button" id ="createRoom" class="btn" value ="Create a new room"   data-target="#myModal">
+                    </div>
+
+                </div>
+
+
+            
+
+        <script src="chat.js"></script>
+
+
+
     </body>
 </html>
