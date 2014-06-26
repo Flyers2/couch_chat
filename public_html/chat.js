@@ -1,6 +1,6 @@
 
-var dburl = "http://localhost:5984/fast_chat",
-    seeRoomsUrl = dburl + "/_design/seerooms/_view/rooms?group_level=1";
+var dburl = "http://162.243.45.239:5984/fast_chat",
+    seeRoomsUrl = dburl+"/_design/seerooms/_view/rooms?group_level=1";
     userName = "",
     recipient = '',
     updater = 0,
@@ -31,6 +31,7 @@ $('#changeRoom').click(function(){
         "top":'18%',
         'left':"43%"
     });
+	//$('#submit').show();
 });
 $('#chooseUserButton').click(function(){
     $('#userNameInput').modal('show');
