@@ -17,7 +17,7 @@
     width: 25%;
 }
 #submit{
-    visibility:hidden;
+    //visibility:hidden; 
     float:right;
     margin-right: 21%;
     margin-top: 4px;
@@ -67,17 +67,25 @@
 visibility: hidden; 
 display:inline;
 margin-left:57px;
-
-}#changeRoom{
-    position: absolute;
-    top: 80%;
-    right: 37%;
-}
-#chooseUserButton{
-    position: absolute;
-top: 80%;
-left: 37%;
 }
 .specific{
     display: none;
+	}
+#changeRoom{
+    
+    margin :30px;
+   // right: 37%;
 }
+#chooseUserButton{
+    //position: absolute;
+//top: 80%;
+//left: 37%;
+margin:30px;
+}
+
+
+
+#mainMenuButtons{
+	display:block;
+	margin:15px;
+}	
